@@ -14,4 +14,4 @@ int main() {
     std::cout << "Resultado: " << root->evaluate(x_test) << std::endl;
 
     return 0;
-}
+} 
