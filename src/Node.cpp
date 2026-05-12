@@ -31,3 +31,16 @@ std::string Node::toString() const {
             return "";
     }
 }
+
+// NUEVO: Implementación de clone() para poder reproducir árboles
+std::unique_ptr<Node> Node::clone() const {
+    // Creamos una copia exacta del nodo actual
+    auto copy = std::make_unique<Node>(this->type);
+    copy->value = this->value;
+    
+    // Clonamos recursivamente a todos los hijos
+    for (const auto& child : this->children) {
+        copy->children.push_back(child->clone());
+    }
+    return copy;
+}
