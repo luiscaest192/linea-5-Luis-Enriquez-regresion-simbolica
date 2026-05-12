@@ -21,9 +21,9 @@ public:
 
     double evaluate(double x) const;
     
-    // NUEVO: Para imprimir la ecuación
-    std::string toString() const; // NUEVO: Para imprimir la ecuación
+    std::string toString() const;
 
+    std::unique_ptr<Node> clone() const; // NUEVO: Para poder reproducir árboles
 };
 
 #endif
