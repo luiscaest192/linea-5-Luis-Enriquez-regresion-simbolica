@@ -20,6 +20,11 @@ public:
     Node(OpType t) : type(t), value(0.0) {}
 
     double evaluate(double x) const;
+    
+    // NUEVO: Para imprimir la ecuación
+    double evaluate(double x) const;
+    std::string toString() const; // NUEVO: Para imprimir la ecuación
+
 };
 
 #endif
