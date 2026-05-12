@@ -22,7 +22,6 @@ public:
     double evaluate(double x) const;
     
     // NUEVO: Para imprimir la ecuación
-    double evaluate(double x) const;
     std::string toString() const; // NUEVO: Para imprimir la ecuación
 
 };
