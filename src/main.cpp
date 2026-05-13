@@ -2,12 +2,19 @@
 #include <vector>
 #include <memory>
 #include <random>
+#include <algorithm>
 #include "Node.hpp"
 
 // Estructura para nuestros datos (X, Y)
 struct Point {
     double x;
     double y;
+};
+
+// Estructura para ordenar a la poblacion
+struct Individual {
+    std::unique_ptr<Node> tree;
+    double fitness;
 };
 
 // --- PILAR 1: Generador Aleatorio (simplificado para el main) ---
@@ -92,42 +99,85 @@ double calculateMSE(const std::unique_ptr<Node>& tree, const std::vector<Point>&
 }
 
 int main() {
-    std::cout << "--- Motor de Regresión Simbólica en C++ ---\n\n";
+    std::cout << "--- Motor de Regresion Simbolica (Algoritmo Genetico) ---\n\n";
 
-    // 1. Crear datos de entrenamiento ficticios: y = 2x
+    // 1. Datos de entrenamiento ficticios: y = 2x
     std::vector<Point> dataset;
     for (int i = 1; i <= 5; ++i) {
         dataset.push_back({(double)i, (double)(2 * i)});
     }
 
-    std::cout << "Datos de entrenamiento (y = 2x):\n";
-    for (const auto& p : dataset) {
-        std::cout << "X: " << p.x << " -> Y real: " << p.y << "\n";
-    }
-    std::cout << "-------------------------------------------\n\n";
-
-    // 2. Generar una población de 3 árboles aleatorios
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    std::cout << "--- Prueba de Cruce (Crossover) ---\n";
-    
-    // Generamos dos padres aleatorios
-    auto padre1 = generateRandomTree(2, gen);
-    auto padre2 = generateRandomTree(2, gen);
-    
-    std::cout << "Padre 1 (Original): f(x) = " << padre1->toString() << "\n";
-    std::cout << "Padre 2 (Original): f(x) = " << padre2->toString() << "\n\n";
+    // 2. Hiperparametros del Algoritmo
+    const int POPSIZE = 100;        // 100 ecuaciones compitiendo
+    const int GENERATIONS = 50;     // 50 ciclos de evolucion
+    const double MUTATION_RATE = 0.1; // 10% de probabilidad de mutacion
+    const int ELITISM = 10;         // Salvamos a los 10 mejores cada generacion
 
-    // Clonamos para no perder la referencia original en la impresión
-    auto hijo1 = padre1->clone();
-    auto hijo2 = padre2->clone();
+    // 3. Crear la poblacion inicial
+    std::vector<Individual> population;
+    for (int i = 0; i < POPSIZE; ++i) {
+        population.push_back({generateRandomTree(3, gen), 0.0});
+    }
 
-    // Aplicamos el cruce
-    crossover(hijo1, hijo2, gen);
+    // --- EL BUCLE GENERACIONAL ---
+    for (int g = 0; g < GENERATIONS; ++g) {
+        // A. Evaluar el fitness (MSE) de toda la poblacion
+        for (auto& ind : population) {
+            ind.fitness = calculateMSE(ind.tree, dataset);
+        }
 
-    std::cout << "Hijo 1 (Tras cruce): f(x) = " << hijo1->toString() << "\n";
-    std::cout << "Hijo 2 (Tras cruce): f(x) = " << hijo2->toString() << "\n\n";
+        // B. Ordenar de mejor a peor (menor MSE es mejor)
+        std::sort(population.begin(), population.end(), 
+            [](const Individual& a, const Individual& b) {
+                return a.fitness < b.fitness;
+            });
+
+        // Imprimir al mejor de la generacion actual
+        std::cout << "Generacion " << g 
+                  << " | Mejor MSE: " << population[0].fitness 
+                  << " | f(x) = " << population[0].tree->toString() << "\n";
+
+        // Condicion de parada: Si encontramos la respuesta exacta (MSE cercano a 0)
+        if (population[0].fitness < 0.001) {
+            std::cout << "\n✅ Solucion encontrada en la generacion " << g << "!\n";
+            break;
+        }
+
+        // C. Crear la siguiente generacion
+        std::vector<Individual> new_population;
+
+        // Elitismo: Pasar a los mejores directamente
+        for (int i = 0; i < ELITISM; ++i) {
+            new_population.push_back({population[i].tree->clone(), 0.0});
+        }
+
+        // D. Llenar el resto de la poblacion con Cruce y Mutacion
+        while (new_population.size() < POPSIZE) {
+            // Seleccion por Torneo (simplificada): Elegir padres aleatorios de la mejor mitad
+            std::uniform_int_distribution<> parentDist(0, POPSIZE / 2);
+            auto p1 = population[parentDist(gen)].tree->clone();
+            auto p2 = population[parentDist(gen)].tree->clone();
+
+            // Aplicar Cruce
+            crossover(p1, p2, gen);
+
+            // Aplicar Mutacion
+            mutate(p1, MUTATION_RATE, 3, gen);
+            mutate(p2, MUTATION_RATE, 3, gen);
+
+            // Añadir los hijos a la nueva poblacion
+            new_population.push_back({std::move(p1), 0.0});
+            if (new_population.size() < POPSIZE) {
+                new_population.push_back({std::move(p2), 0.0});
+            }
+        }
+
+        // Reemplazar la poblacion vieja con la nueva
+        population = std::move(new_population);
+    }
 
     return 0;
 }
