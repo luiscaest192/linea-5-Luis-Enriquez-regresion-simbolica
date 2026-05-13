@@ -126,11 +126,11 @@ int main(int argc, char* argv[]) {
 
     std::cout << "--- Motor de Regresion Simbolica (Algoritmo Genetico) ---\n\n";
 
-    // 1. Datos de entrenamiento ficticios: y = 2x
+    /* 1. Datos de entrenamiento ficticios: y = 2x
     std::vector<Point> dataset;
     for (int i = 1; i <= 5; ++i) {
         dataset.push_back({(double)i, (double)(2 * i)});
-    }
+    }*/
 
     std::random_device rd;
     std::mt19937 gen(rd());
