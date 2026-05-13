@@ -2,3 +2,5 @@
 docs/roadmap.md:Zone.Identifier
 Makefile
 venv/
+uploads/
+datos_evolucion.json
