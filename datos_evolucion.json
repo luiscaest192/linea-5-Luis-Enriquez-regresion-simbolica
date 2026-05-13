@@ -1,0 +1,13 @@
+[
+  {
+    "generacion": 0,
+    "mse": 0.268001,
+    "ecuacion": "(0.84 * ((x + x) + (-0.3 * -3.7)))"
+  },
+  {
+    "generacion": 1,
+    "mse": 0,
+    "ecuacion": "(x + x)"
+  }
+
+]

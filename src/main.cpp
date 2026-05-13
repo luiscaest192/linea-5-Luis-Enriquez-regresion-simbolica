@@ -3,6 +3,7 @@
 #include <memory>
 #include <random>
 #include <algorithm>
+#include <fstream>
 #include "Node.hpp"
 
 // Estructura para nuestros datos (X, Y)
@@ -121,6 +122,9 @@ int main() {
     for (int i = 0; i < POPSIZE; ++i) {
         population.push_back({generateRandomTree(3, gen), 0.0});
     }
+    // Abrimos el archivo para guardar la evolucion
+    std::ofstream outFile("datos_evolucion.json");
+    outFile << "[\n"; // Iniciamos un arreglo JSON
 
     // --- EL BUCLE GENERACIONAL ---
     for (int g = 0; g < GENERATIONS; ++g) {
@@ -139,6 +143,19 @@ int main() {
         std::cout << "Generacion " << g 
                   << " | Mejor MSE: " << population[0].fitness 
                   << " | f(x) = " << population[0].tree->toString() << "\n";
+
+        // Escribimos aquí el JSON
+        outFile << "  {\n";
+        outFile << "    \"generacion\": " << g << ",\n";
+        outFile << "    \"mse\": " << population[0].fitness << ",\n";
+        outFile << "    \"ecuacion\": \"" << population[0].tree->toString() << "\"\n";
+        
+        // Si el MSE es casi 0, esta será la última iteración, así que no ponemos coma
+        if (g < GENERATIONS - 1 && population[0].fitness >= 0.001) {
+            outFile << "  },\n"; 
+        } else {
+            outFile << "  }\n"; 
+        }
 
         // Condicion de parada: Si encontramos la respuesta exacta (MSE cercano a 0)
         if (population[0].fitness < 0.001) {
@@ -178,6 +195,9 @@ int main() {
         // Reemplazar la poblacion vieja con la nueva
         population = std::move(new_population);
     }
+    // Cerramos el archivo JSON, al salir del bucle
+    outFile << "\n]\n";
+    outFile.close();
 
     return 0;
 }

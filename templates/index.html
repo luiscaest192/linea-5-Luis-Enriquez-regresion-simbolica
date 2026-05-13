@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor de Regresión Simbólica</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        .stats { display: flex; justify-content: space-around; margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 1.1em; }
+        .chart-container { position: relative; height: 400px; width: 100%; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Evolución del Algoritmo Genético</h1>
+    
+    <div class="stats">
+        <div><strong>Mejor Ecuación Hallada:</strong> <span id="final-equation">Cargando...</span></div>
+        <div><strong>Error Final (MSE):</strong> <span id="final-mse">Cargando...</span></div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="mseChart"></canvas>
+    </div>
+</div>
+
+<script>
+    // Obtener los datos del servidor Flask
+    fetch('/datos')
+        .then(response => response.json())
+        .then(data => {
+            // Extraer la información para la gráfica
+            const generaciones = data.map(d => `Gen ${d.generacion}`);
+            const errores = data.map(d => d.mse);
+            
+            // Actualizar los textos con el resultado final (última generación)
+            const ultimoDato = data[data.length - 1];
+            document.getElementById('final-equation').innerText = `f(x) = ${ultimoDato.ecuacion}`;
+            document.getElementById('final-mse').innerText = ultimoDato.mse.toFixed(6);
+
+            // Configurar y dibujar la gráfica con Chart.js
+            const ctx = document.getElementById('mseChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: generaciones,
+                    datasets: [{
+                        label: 'Error Cuadrático Medio (MSE)',
+                        data: errores,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.3, // Hace la línea curva y suave
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Error (MSE)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Generaciones' }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al cargar los datos:', error));
+</script>
+
+</body>
+</html>
