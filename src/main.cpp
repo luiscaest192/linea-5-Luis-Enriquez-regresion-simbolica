@@ -4,6 +4,7 @@
 #include <random>
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include "Node.hpp"
 
 // Estructura para nuestros datos (X, Y)
@@ -99,7 +100,30 @@ double calculateMSE(const std::unique_ptr<Node>& tree, const std::vector<Point>&
     return error_sum / data.size();
 }
 
-int main() {
+// Función para cargar datos desde un archivo CSV
+std::vector<Point> cargarDatos(std::string filename) {
+    std::vector<Point> dataset;
+    std::ifstream file(filename);
+    std::string line;
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        std::string x_str, y_str;
+        if (std::getline(ss, x_str, ',') && std::getline(ss, y_str, ',')) {
+            dataset.push_back({std::stod(x_str), std::stod(y_str)});
+        }
+    }
+    return dataset;
+}
+
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cerr << "Uso: ./regresion_simbolica <archivo.csv>" << std::endl;
+        return 1;
+    }
+
+    std::string filename = argv[1];
+    std::vector<Point> dataset = cargarDatos(filename);
+
     std::cout << "--- Motor de Regresion Simbolica (Algoritmo Genetico) ---\n\n";
 
     // 1. Datos de entrenamiento ficticios: y = 2x
