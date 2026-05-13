@@ -1,8 +1,8 @@
 [
   {
     "generacion": 0,
-    "mse": 0.268001,
-    "ecuacion": "(0.84 * ((x + x) + (-0.3 * -3.7)))"
+    "mse": 0.569495,
+    "ecuacion": "(0.64 + ((x + x) + -1.4))"
   },
   {
     "generacion": 1,
