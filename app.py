@@ -1,3 +1,4 @@
+import subprocess
 from flask import Flask, render_template, send_file
 import os
 
@@ -21,3 +22,23 @@ def get_datos():
 if __name__ == '__main__':
     # Ejecutamos el servidor en el puerto 5000
     app.run(debug=True, host='0.0.0.0', port=5000)
+
+# NUEVO: Ruta para subir archivos CSV desde la interfaz
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return "No hay archivo", 400
+    
+    file = request.files['file']
+    filepath = os.path.join("uploads", file.filename)
+    os.makedirs("uploads", exist_ok=True)
+    file.save(filepath)
+
+    # Ejecutamos el motor de C++ con el nuevo archivo
+    try:
+        # Llama al binario compilado pasando el path del archivo
+        subprocess.run(["./regresion_simbolica", filepath], check=True)
+        return jsonify({"status": "success", "message": "Procesamiento completado"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500

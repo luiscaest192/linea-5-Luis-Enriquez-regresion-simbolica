@@ -27,6 +27,38 @@
         <canvas id="mseChart"></canvas>
     </div>
 </div>
+<div class="container">
+    <h1>Análisis de Datos Personalizados</h1>
+    
+    <div style="text-align: center; margin-bottom: 30px;">
+        <input type="file" id="fileInput" accept=".csv">
+        <button onclick="procesarDatos()" style="padding: 10px 20px; cursor: pointer;">
+            Iniciar Regresión Simbólica
+        </button>
+    </div>
+
+    </div>
+
+<script>
+async function procesarDatos() {
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput.files.length === 0) return alert("Selecciona un archivo CSV");
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+
+    // Enviar archivo al servidor
+    const response = await fetch('/upload', { method: 'POST', body: formData });
+    const result = await response.json();
+
+    if (result.status === "success") {
+        // Recargar la gráfica con los nuevos datos
+        location.reload(); 
+    } else {
+        alert("Error: " + result.message);
+    }
+}
+</script>
 
 <script>
     // Obtener los datos del servidor Flask
