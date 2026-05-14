@@ -98,41 +98,37 @@ std::vector<Point> cargarDatos(std::string filename) {
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cerr << "Uso: ./regresion_simbolica <archivo.csv>" << std::endl;
+        std::cerr << "Uso: ./regresion_simbolica <archivo.csv>" << std::endl; // Pedimos el nombre del archivo CSV como argumento
         return 1;
     }
 
     std::string filename = argv[1];
-    std::vector<Point> dataset = cargarDatos(filename);
+    std::vector<Point> dataset = cargarDatos(filename); // Cargamos los datos desde el archivo CSV
 
     std::cout << "--- Motor de Regresion Simbolica (Algoritmo Genetico) ---\n\n";
-
-    /* 1. Datos de entrenamiento ficticios: y = 2x
-    std::vector<Point> dataset;
-    for (int i = 1; i <= 5; ++i) {
-        dataset.push_back({(double)i, (double)(2 * i)});
-    }*/
 
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    // 2. Hiperparametros del Algoritmo
+    // HIPERPARAMETROS DEL ALGORITMO GENETICO
     const int POPSIZE = 100;        // 100 ecuaciones compitiendo
     const int GENERATIONS = 50;     // 50 ciclos de evolucion
     const double MUTATION_RATE = 0.1; // 10% de probabilidad de mutacion
     const int ELITISM = 10;         // Salvamos a los 10 mejores cada generacion
+    const int MAX_DEPTH = 3;           // Profundidad máxima de los árboles (para evitar ecuaciones demasiado complejas)
+    const double TARGET_MSE = 0.001; // Si encontramos una ecuación con MSE menor a esto, paramos la evolución
 
-    // 3. Crear la poblacion inicial
+    // CREACIÓN DE LA POBLACIÓN INICIAL
     std::vector<Individual> population;
     for (int i = 0; i < POPSIZE; ++i) {
-        population.push_back({generateRandomTree(3, gen), 0.0});
+        population.push_back({generateRandomTree(MAX_DEPTH, gen), 0.0}); //La poblacion inicial con arboles de profundidad max 3 para no empezar con ecuaciones muy complejas
     }
-    // Abrimos el archivo para guardar la evolucion
+    // ABRIMOS EL ARCHIVO JSON PARA GUARDAR LA EVOLUCIÓN
     std::ofstream outFile("datos_evolucion.json");
     outFile << "[\n"; // Iniciamos un arreglo JSON
 
     // --- EL BUCLE GENERACIONAL ---
-    for (int g = 0; g < GENERATIONS; ++g) {
+    for (int g = 0; g < GENERATIONS; ++g) { // En cada generación: 
         // A. Evaluar el fitness (MSE) de toda la poblacion
         for (auto& ind : population) {
             ind.fitness = calculateMSE(ind.tree, dataset);
@@ -156,19 +152,19 @@ int main(int argc, char* argv[]) {
         outFile << "    \"ecuacion\": \"" << population[0].tree->toString() << "\"\n";
         
         // Si el MSE es casi 0, esta será la última iteración, así que no ponemos coma
-        if (g < GENERATIONS - 1 && population[0].fitness >= 0.001) {
+        if (g < GENERATIONS - 1 && population[0].fitness >= TARGET_MSE) { // Aquí está qué tan exacta debe ser la solución para detenerse antes de las 50 generaciones
             outFile << "  },\n"; 
         } else {
             outFile << "  }\n"; 
         }
 
         // Condicion de parada: Si encontramos la respuesta exacta (MSE cercano a 0)
-        if (population[0].fitness < 0.001) {
+        if (population[0].fitness < TARGET_MSE) {
             std::cout << "\n✅ Solucion encontrada en la generacion " << g << "!\n";
             break;
         }
 
-        // C. Crear la siguiente generacion
+        // C. CREACIÓN DE LA SIGUIENTE GENERACIÓN
         std::vector<Individual> new_population;
 
         // Elitismo: Pasar a los mejores directamente
@@ -187,8 +183,8 @@ int main(int argc, char* argv[]) {
             crossover(p1, p2, gen);
 
             // Aplicar Mutacion
-            mutate(p1, MUTATION_RATE, 3, gen);
-            mutate(p2, MUTATION_RATE, 3, gen);
+            mutate(p1, MUTATION_RATE, MAX_DEPTH, gen);
+            mutate(p2, MUTATION_RATE, MAX_DEPTH, gen);
 
             // Añadir los hijos a la nueva poblacion
             new_population.push_back({std::move(p1), 0.0});
