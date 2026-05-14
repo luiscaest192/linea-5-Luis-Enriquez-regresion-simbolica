@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
         std::cerr << "Uso: ./regresion_simbolica <archivo.csv>" << std::endl; // Pedimos el nombre del archivo CSV como argumento
         return 1;
     }
-
+    // -- OBTENCIÓN DE DATOS DEL CSV --
     std::string filename = argv[1];
     std::vector<Point> dataset = cargarDatos(filename); // Cargamos los datos desde el archivo CSV
 
