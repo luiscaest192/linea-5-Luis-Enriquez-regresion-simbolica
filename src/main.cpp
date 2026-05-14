@@ -20,7 +20,7 @@ struct Individual {
     double fitness;
 };
 
-// --- PILAR 3: Operador de Mutación ---
+// --- OPERADOR DE MUTACIÓN ---
 void mutate(std::unique_ptr<Node>& node, double mutationRate, int maxDepth, std::mt19937& gen) {
     std::uniform_real_distribution<double> probDist(0.0, 1.0);
 
@@ -36,7 +36,7 @@ void mutate(std::unique_ptr<Node>& node, double mutationRate, int maxDepth, std:
     }
 }
 
-// --- PILAR 3.5: Operador de Cruce (Crossover) ---
+// --- OPERADOR DE CRUCE (Crossover) ---
 
 // Función auxiliar para recolectar referencias a todos los unique_ptr del árbol
 void collectNodeRefs(std::unique_ptr<Node>& node, std::vector<std::unique_ptr<Node>*>& refs) {
@@ -69,7 +69,7 @@ void crossover(std::unique_ptr<Node>& parent1, std::unique_ptr<Node>& parent2, s
     std::swap(*swapNode1, *swapNode2);
 }
 
-// --- PILAR 2: Función de Fitness (MSE) ---
+// --- FUNCIÓN DE FITNESS (MSE) ---
 double calculateMSE(const std::unique_ptr<Node>& tree, const std::vector<Point>& data) {
     double error_sum = 0.0;
     for (const auto& point : data) {
@@ -80,6 +80,7 @@ double calculateMSE(const std::unique_ptr<Node>& tree, const std::vector<Point>&
     return error_sum / data.size();
 }
 
+// --- OBTENCIÓN DE DATOS ---
 // Función para cargar datos desde un archivo CSV
 std::vector<Point> cargarDatos(std::string filename) {
     std::vector<Point> dataset;
