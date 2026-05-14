@@ -4,3 +4,4 @@ Makefile
 venv/
 uploads/
 datos_evolucion.json
+ngrok-v3-stable-linux-amd64.tgz
