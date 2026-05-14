@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
     // CREACIÓN DE LA POBLACIÓN INICIAL
     std::vector<Individual> population;
     for (int i = 0; i < POPSIZE; ++i) {
-        population.push_back({generateRandomTree(MAX_DEPTH, gen), 0.0}); //La poblacion inicial con arboles de profundidad max 3 para no empezar con ecuaciones muy complejas
+        population.push_back({generateRandomTree(MAX_DEPTH, gen,0), 0.0}); //La poblacion inicial con arboles de profundidad max 3 para no empezar con ecuaciones muy complejas
     }
     // ABRIMOS EL ARCHIVO JSON PARA GUARDAR LA EVOLUCIÓN
     std::ofstream outFile("datos_evolucion.json");
