@@ -1,6 +1,11 @@
 #include "Node.hpp"
 #include <cmath>
 
+// Implementación de los métodos de la clase Node
+// ----------------------------------------------
+
+// Implementación del método evaluate() para calcular el valor de la expresión dada una x
+
 double Node::evaluate(double x) const {
     switch (this->type) {
         case OpType::CONSTANT: return value;
@@ -15,7 +20,7 @@ double Node::evaluate(double x) const {
 
 #include <string>
 
-// NUEVO: Implementación de toString() para imprimir la ecuación
+// NUEVO: Implementación del método toString() para imprimir la ecuación
 
 std::string Node::toString() const {
     switch (this->type) {
@@ -32,7 +37,7 @@ std::string Node::toString() const {
     }
 }
 
-// NUEVO: Implementación de clone() para poder reproducir árboles
+// NUEVO: Implementación del método clone() para poder reproducir árboles
 std::unique_ptr<Node> Node::clone() const {
     // Creamos una copia exacta del nodo actual
     auto copy = std::make_unique<Node>(this->type);

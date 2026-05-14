@@ -9,8 +9,8 @@
 
 // Estructura para nuestros datos (X, Y)
 struct Point {
-    double x;
-    double y;
+    double x; // Coordenada horizontal
+    double y; /// Coordenada vertical
 };
 
 // Estructura para ordenar a la poblacion

@@ -2,28 +2,28 @@
 #include <random>
 
 // Instanciamos el generador de números aleatorios (Mersenne Twister)
-static std::random_device rd;
-static std::mt19937 gen(rd());
+static std::random_device rd; // Semilla para el generador de números aleatorios
+static std::mt19937 gen(rd()); // Generador de números aleatorios
 
 std::unique_ptr<Node> generateRandomTree(int maxDepth, int currentDepth = 0) {
-    std::uniform_real_distribution<double> probDist(0.0, 1.0);
-    double p = probDist(gen);
+    std::uniform_real_distribution<double> probDist(0.0, 1.0); // Número aleatorio entre 0 y 1
+    double p = probDist(gen); // Asignamos un número aleatorio a p para decidir qué tipo de nodo crear
 
     // Condición de parada: Si llegamos a la profundidad máxima, forzamos un terminal
     if (currentDepth >= maxDepth) {
         if (p < 0.5) {
-            return std::make_unique<Node>(OpType::VAR_X);
+            return std::make_unique<Node>(OpType::VAR_X); // Nos regresa un nodo variable "x"
         } else {
             std::uniform_real_distribution<double> constDist(-10.0, 10.0);
-            return std::make_unique<Node>(constDist(gen)); // Constante entre -10 y 10
+            return std::make_unique<Node>(constDist(gen)); // Nos regresa un nodo constante con un valor aleatorio entre -10 y 10
         }
     }
 
     // Si no estamos en la profundidad máxima, elegimos operación o terminal
     // 70% de probabilidad de ser una operación, 30% de ser terminal
     if (p < 0.7) {
-        std::uniform_int_distribution<> opDist(0, 1); // 0: SUM, 1: MUL
-        OpType op = static_cast<OpType>(opDist(gen));
+        std::uniform_int_distribution<> opDist(0, 1); // Número aleatorio 0 o 1
+        OpType op = static_cast<OpType>(opDist(gen)); // 0: SUM, 1: MUL
         
         auto node = std::make_unique<Node>(op);
         // Llamada recursiva para generar los hijos
