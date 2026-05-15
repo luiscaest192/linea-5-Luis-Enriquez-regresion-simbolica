@@ -2,7 +2,8 @@
 
 **Herramienta utilizada:** Gemini (Google)
 **Propósito:** Asistencia en diseño arquitectónico, resolución de problemas de gestión de memoria en C++ y estructuración del pipeline de despliegue.
-**Link de conversación:** https://gemini.google.com/share/e163203a5702
+**Link donde se orquestó el proyecto:** https://gemini.google.com/share/686bb3eb4997
+**Link donde se le pidió una explicación sobre cada línea de código:**  https://gemini.google.com/share/4d62b00d5b92
 
 A continuación se detallan las interacciones clave donde la IA aportó valor técnico significativo al desarrollo del Motor de Regresión Simbólica. Se adjuntan los logs de las conversaciones en esta misma carpeta.
 
