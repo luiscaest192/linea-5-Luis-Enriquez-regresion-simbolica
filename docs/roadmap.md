@@ -1,17 +1,16 @@
 # Roadmap de Formación - Línea 5
 
 ## Cursos Base
-| Tema | Plataforma | Recurso | Horas Est. |
-| :--- | :--- | :--- | :--- |
-| Git & GitHub | YouTube | [Nombre del Video](Enlace) | 1.5 h |
-| Entornos (VS Code) | YouTube | [Nombre del Video](Enlace) | 0.5 h |
-| IA Generativa | YouTube | [Nombre del Video](Enlace) | 1.0 h |
+| Tema | Plataforma | Recurso | Horas Est. | Evidencia |
+| :--- | :--- | :--- | :--- | :--- |
+| Lenguaje C++ | YouTube | [✅ Curso de C++ desde CERO para PRINCIPIANTES (Completo) - 2026](https://www.youtube.com/watch?v=jS6wb263CIM) | 9.5 h | [Captura](../evidencia/cursos_base/curso_cpp.jpg) |
+| Python | YouTube | [Curso COMPLETO de Python DESDE CERO para Principiantes 2025](https://www.youtube.com/watch?v=TkN2i-_4N4g) | 4.75 h | [Captura](../evidencia/cursos_base/curso_py.jpg) |
+| Python/Flask | YouTube | [Tutorial Flask: Framework de Python para Aplicaciones Web 🌐 (Desde Cero) ✅](https://www.youtube.com/watch?v=-1DmVCPB6H8) | 0.8 h | [Captura](../evidencia/cursos_base/tutorial_py_flask.jpg) |
 
 ## Cursos de Especialización
-| Tema | Plataforma | Recurso | Horas Est. |
-| :--- | :--- | :--- | :--- |
-| Mojo Language | YouTube | [Mojo Fast Track](Enlace) | 1.0 h |
-| Algoritmos Evolutivos| YouTube | [Genetic Algorithms](Enlace) | 1.5 h |
-| High Performance | YouTube | [SIMD/Parallelism](Enlace) | 0.5 h |
+| Tema | Plataforma | Recurso | Horas Est. | Evidencia |
+| :--- | :--- | :--- | :--- | :--- |
+| Algoritmos Evolutivos | YouTube | [Build a Genetic Algorithm From Scratch In C++](https://www.youtube.com/watch?v=SWi-4IHFf1c) | 0.4 h | [Captura](../evidencia/cursos_especializacion/tutorial_algoritmo_genetico.jpg) |
+| Makefile | YouTube | [Tutorial Makefile \| Español](https://www.youtube.com/watch?v=TMYfEGakwaE) | 0.2 h | [Captura](../evidencia/cursos_especializacion/tutorial_makefile.jpg) | 
 
-**Total de horas estimadas:** 6 horas.
+**Total de horas estimadas:** 15.5 horas.
