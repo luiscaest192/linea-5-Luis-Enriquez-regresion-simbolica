@@ -22,7 +22,7 @@ Este proyecto está diseñado para ejecutarse en un entorno Linux (nativo o medi
 
 1. **Clonar el repositorio:**
 ```Bash
-   git clone [https://github.com/luiscaest192/linea-5-Luis-Enriquez-regresion-simbolica](https://github.com/luiscaest192/linea-5-Luis-Enriquez-regresion-simbolica)
+   git clone https://github.com/luiscaest192/linea-5-Luis-Enriquez-regresion-simbolica
    cd linea-5-Luis-Enriquez-regresion-simbolica
 ```
 
